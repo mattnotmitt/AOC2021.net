@@ -13,7 +13,7 @@ foreach (var reading in input.Skip(1))
 {
     if (reading > lastReading) ctr++;
     lastReading = reading;
-}  
+}
 
 Console.WriteLine($"Single Increases: {ctr}");
 
