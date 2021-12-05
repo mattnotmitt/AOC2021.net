@@ -5,11 +5,10 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Day1P1</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="morelinq" Version="3.3.2"/>
+        <PackageReference Include="morelinq" Version="3.3.2" />
     </ItemGroup>
 
 </Project>

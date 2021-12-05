@@ -1,7 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System;
-using System.Linq;
 using System.Numerics;
 using static System.IO.File;
 
@@ -13,7 +11,7 @@ Console.WriteLine($"Naive Result: {badPos.X * badPos.Y}");
 var mvmt = new Movement();
 var pos = data.Aggregate(Vector2.Zero, (current, inst) => current + mvmt.DecodeInstructionsP2(inst));
 
-Console.WriteLine($"Result: {(long)pos.X * (long) pos.Y}");
+Console.WriteLine($"Result: {(long) pos.X * (long) pos.Y}");
 
 public class Movement
 {
@@ -43,7 +41,7 @@ public class Movement
 
         return result;
     }
-    
+
     public Vector2 DecodeInstructionsP2(string inst)
     {
         var result = Vector2.Zero;
