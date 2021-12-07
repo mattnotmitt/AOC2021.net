@@ -2,12 +2,22 @@
 	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4dbaa42e_002Db2e2_002D4caf_002D9a6b_002Ddde8ea99df37/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1 #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;And&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;NUnit3x::E725215F-EF0B-4923-A0EC-AA838225AEBA::net6.0::Day5Test.Tests.Test1&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;NUnit3x::35D25F34-556E-48DA-917D-B4AFDC215263::net6.0::Day6Test.Tests&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
+    &lt;Or&gt;&#xD;
+      &lt;And&gt;&#xD;
+        &lt;TestAncestor&gt;&#xD;
+          &lt;TestId&gt;NUnit3x::E725215F-EF0B-4923-A0EC-AA838225AEBA::net6.0::Day5Test.Tests.Test1&lt;/TestId&gt;&#xD;
+          &lt;TestId&gt;NUnit3x::35D25F34-556E-48DA-917D-B4AFDC215263::net6.0::Day6Test.Tests&lt;/TestId&gt;&#xD;
+        &lt;/TestAncestor&gt;&#xD;
+        &lt;Not&gt;&#xD;
+          &lt;Project Location="C:\Users\Matt\RiderProjects\AOC2021.net\Day5Test" Presentation="&amp;lt;Day5Test&amp;gt;" /&gt;&#xD;
+        &lt;/Not&gt;&#xD;
+      &lt;/And&gt;&#xD;
+      &lt;TestAncestor&gt;&#xD;
+        &lt;TestId&gt;NUnit3x::78EB7B26-1830-4C7B-838F-5FDBC3CEFEB4::net6.0::Day7Test.Tests.Day7Test1&lt;/TestId&gt;&#xD;
+      &lt;/TestAncestor&gt;&#xD;
+    &lt;/Or&gt;&#xD;
     &lt;Not&gt;&#xD;
-      &lt;Project Location="C:\Users\Matt\RiderProjects\AOC2021.net\Day5Test" Presentation="&amp;lt;Day5Test&amp;gt;" /&gt;&#xD;
+      &lt;Project Location="C:\Users\Matt\RiderProjects\AOC2021.net\Day6Test" Presentation="&amp;lt;Day6Test&amp;gt;" /&gt;&#xD;
     &lt;/Not&gt;&#xD;
   &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
