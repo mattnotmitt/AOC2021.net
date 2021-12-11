@@ -29,6 +29,6 @@ public class Tests
     {
         var logic = new SyntaxLogic(testData);
         Assert.AreEqual(26397, logic.Part1Answer());
-        Assert.AreEqual(288957, logic.Part2Answer());
+        Assert.AreEqual(288957L, logic.Part2Answer());
     }
 }
