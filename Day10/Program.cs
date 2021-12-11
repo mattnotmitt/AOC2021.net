@@ -1,10 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Numerics;
+using System.Text;
 
 namespace Day10;
 
-using static System.IO.File;
+using static File;
 
 public class Program
 {
@@ -18,106 +18,85 @@ public class Program
 
 public class SyntaxLogic
 {
-    private string[] navSubSys;
-    private readonly Dictionary<char, char> pairs = new() {{'[', ']'}, {'<','>'}, {'(', ')'}, {'{', '}'}};
-    private readonly Dictionary<char, int> corrScores = new() {{']', 57}, {'>',25137}, {')', 3}, {'}', 1197}};
+    private readonly string[] navSubSys;
 
-    private int synScore = 0;
     public SyntaxLogic(string[] inp)
     {
         navSubSys = inp;
     }
 
-    private int RecursiveChunkage(string substr, char closing)
+    private Stack<char> ParseLine(string line)
     {
-        for (var i = 1; i < substr.Length;)
-        {
-            var c = substr[i];
-            var ni = i+1;
-            if (c == closing) return ni;
-            if (pairs.ContainsKey(c))
+        var matches = new Dictionary<char, char> {{'}', '{'}, {')', '('}, {'>', '<'}, {']', '['}};
+        var stack = new Stack<char>();
+
+        foreach (var c in line)
+            if (c is '{' or '[' or '<' or '(')
             {
-                var chunkLen = RecursiveChunkage(substr[i..], pairs[c]);
-                if (chunkLen == -1) return -1;
-                i += chunkLen;
+                stack.Push(c);
             }
             else
             {
-                synScore += corrScores[c];
-                return -1;
+                var p = stack.Pop();
+                if (matches[c] != p)
+                    throw new Exception(c.ToString());
             }
-        }
 
-        return 1;
+        return stack;
     }
-    
-    private List<string> unfinishedLines = new List<string>();
-    private bool foundUnfinished = false;
 
-    private void FindUnfinished()
+    private char CheckForCorruptedLine(string line)
     {
-        foreach (var line in navSubSys)
+        try
         {
-            if (RecursiveChunkage(line, pairs[line[0]]) != -1) unfinishedLines.Add(line);
+            ParseLine(line);
+            return '\0';
+        }
+        catch (Exception ex)
+        {
+            return ex.Message[0];
+        }
+    }
+
+    private string CompleteLine(string line)
+    {
+        var matches = new Dictionary<char, char> {{'{', '}'}, {'(', ')'}, {'<', '>'}, {'[', ']'}};
+        var closers = new StringBuilder();
+        try
+        {
+            var stack = ParseLine(line);
+            // We should have only unmatched symbols left            
+            while (stack.Count > 0)
+                closers.Append(matches[stack.Pop()]);
+        }
+        catch (Exception)
+        {
+            return "error";
         }
 
-        foundUnfinished = true;
+        return closers.ToString();
+    }
+
+    private static long ScorePart2(string s)
+    {
+        var values = new Dictionary<char, long> {{'}', 3}, {')', 1}, {'>', 4}, {']', 2}};
+        return s.Aggregate(0, (long a, char b) => a * 5 + values[b]);
     }
 
     public int Part1Answer()
     {
-        if (!foundUnfinished) FindUnfinished();
-        return synScore;
+        var values = new Dictionary<char, int> {{'}', 1197}, {')', 3}, {'>', 25137}, {']', 57}, {'\0', 0}};
+        var total = navSubSys.Select(l => values[CheckForCorruptedLine(l)]).Sum();
+
+        return total;
     }
 
-    private List<long> finishScores = new();
-    private bool linesHaveBeenFinished = false;
-    private readonly Dictionary<char, int> finScores = new() {{')', 1}, {']', 2}, {'}', 3}, {'>', 4}};
-    
-    private int RecursiveFinish(int index, ref string line, ref string end, int bi, char closing)
+    public long Part2Answer()
     {
-        int i;
-        for ( i = bi; i < line.Length;)
-        {
-            var c = line[i];
-            var ni = i+1;
-            if (c == closing)
-            {
-                if (bi != 1) return ni - bi + 1;
-                i++;
-                closing = pairs[line[ni]];
-                continue;
-            }
-
-            if (!pairs.ContainsKey(c)) continue;
-            var chunkLen = RecursiveFinish(index, ref line, ref end, ni, pairs[c]);
-            i += chunkLen;
-            
-            if (bi == 1 && i == line.Length && (line.Length + end.Length) % 2 == 0) return 1;
-        }
-
-        end += closing;
-        finishScores[index] = finishScores[index]*5L + finScores[closing];
-        return i+1-bi;
-    }
-    
-    private void FinishLines()
-    {
-        foreach (var (line, i) in unfinishedLines.Select((l,i) => (l,i)))
-        { 
-            finishScores.Add(0L);
-            var s = line;
-            var c = "";
-            RecursiveFinish(i, ref s, ref c, 1, pairs[s[0]]);
-        }
-
-        linesHaveBeenFinished = true;
-    }
-
-    public BigInteger Part2Answer()
-    {
-        if (!linesHaveBeenFinished) FinishLines();
-        finishScores.Sort();
-        return finishScores[(int) Math.Ceiling(finishScores.Count/2F)];
+        var scores = navSubSys.Select(CompleteLine)
+            .Where(l => l != "error")
+            .Select(ScorePart2)
+            .OrderBy(s => s).ToList();
+        return scores[scores.Count / 2];
     }
 }
